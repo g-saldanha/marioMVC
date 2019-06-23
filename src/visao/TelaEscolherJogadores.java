@@ -5,4 +5,9 @@ public class TelaEscolherJogadores implements ITela {
     public void renderizar() {
 
     }
+
+    @Override
+    public void notifica(String message) {
+
+    }
 }

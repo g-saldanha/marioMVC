@@ -1,15 +1,11 @@
 package visao;
 
-import controlador.CGeral;
 import controlador.CTelas;
 import modelo.BarraEnergia;
 import utils.Constantes;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 
 public class TelaPrincipal implements ITela {
     public static GraphicsConfiguration gc;
@@ -65,29 +61,4 @@ public class TelaPrincipal implements ITela {
         return menu;
     }
 
-    public void setMenu(Menu menu) {
-        this.menu = menu;
-    }
-
-    public void iniciarOption() {
-        CGeral.getInstance().iniciarPartida();
-    }
-
-    public void conectarOption() {
-        JTextField username = new JTextField();
-        JTextField conection = new JTextField();
-        Object[] message = {
-                "Usuario:", username,
-                "Conexao:", conection
-        };
-
-        int option = JOptionPane.showConfirmDialog(null, message, "Conectar", JOptionPane.OK_CANCEL_OPTION);
-        if (option == JOptionPane.OK_OPTION) {
-            if (!username.getText().isEmpty() && !conection.getText().isEmpty()) {
-                String result = CGeral.getInstance().listenerConectar(conection.getText(), username.getText());
-                JOptionPane.showMessageDialog(null, result);
-            }
-        }
-
-    }
 }

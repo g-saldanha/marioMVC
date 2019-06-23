@@ -1,73 +1,88 @@
 package modelo;
 
 import controlador.ControladorGeral;
+import utils.Constantes;
 import visao.TelaPrincipal;
+
+import javax.swing.*;
 
 public class Gerenciador {
 
-	public static TelaPrincipal telaPrincipal = new TelaPrincipal();
-	public AtorNetGames atorNetGames = new AtorNetGames();
+    public static TelaPrincipal telaPrincipal = new TelaPrincipal();
 
-	public static void main(String[] args) {
-		iniciarGame();
-	}
+    public Gerenciador() {
+        ControladorGeral.getInstance().setGerenciador(this);
+    }
 
-	private static void iniciarGame() {
-		ControladorGeral.getInstance().setTelaPrincipal(getTelaPrincipal());
-		ControladorGeral.getInstance().adicionaOuvintes();
-		ControladorGeral.getInstance().getTelaPrincipal().renderizar();
-	}
+    public static void main(String[] args) {
+        new Gerenciador();
+        iniciarGame();
+    }
 
-	public static TelaPrincipal getTelaPrincipal() {
-		return telaPrincipal;
-	}
+    private static void iniciarGame() {
+        ControladorGeral.getInstance().setTelaPrincipal(getTelaPrincipal());
+        ControladorGeral.getInstance().adicionaOuvintes();
+        ControladorGeral.getInstance().getTelaPrincipal().renderizar();
+    }
 
-	public static void conectar() {
+    public static TelaPrincipal getTelaPrincipal() {
+        return telaPrincipal;
+    }
 
-	}
+    public static void conectar(String ipServidor, String nomeJogador) {
+        String conectar = AtorNetGames.getInstance().conectar(ipServidor, nomeJogador);
+        getTelaPrincipal().notifica(conectar);
+    }
 
-	public void iniciarPartida() {
+    public void solicitarInicioDePartida() {
+        String iniciarPartida = AtorNetGames.getInstance().iniciarPartida();
+        getTelaPrincipal().notifica(iniciarPartida);
+    }
 
-	}
+    public void passarCheckpoint() {
 
-	public void solicitarInicioDePartida() {
+    }
 
-	}
+    public void desconectar() {
+        String desconectar = AtorNetGames.getInstance().desconectar();
+        getTelaPrincipal().notifica(desconectar);
+    }
 
-	public void passarCheckpoint() {
+    public void escolherPersonagem() {
 
-	}
+    }
 
-	public void desconectar() {
-		String desconectar = getAtorNetGames().desconectar();
-		getTelaPrincipal().notifica(desconectar);
-	}
+    public void movimentar() {
 
-	public void escolherPersonagem() {
+    }
 
-	}
+    public void rolarDado() {
 
-	public void movimentar() {
+    }
 
-	}
+    public void ataque() {
 
-	public void rolarDado() {
+    }
 
-	}
+    public void defesa() {
 
-	public void ataque() {
+    }
 
-	}
+    public void conectarOption() {
+        JTextField username = new JTextField();
+        JTextField conection = new JTextField();
+        Object[] message = {
+                "Usuario:", username,
+                "Conexao:", conection
+        };
 
-	public void defesa() {
-
-	}
-
-	public AtorNetGames getAtorNetGames() {
-		return atorNetGames;
-	}
-
-	public void setAtorNetGames(AtorNetGames atorNetGames) {
-		this.atorNetGames = atorNetGames;
-	}
+        int option = JOptionPane.showConfirmDialog(null, message, "Conectar", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+            if (!username.getText().isEmpty() && !conection.getText().isEmpty()) {
+                Gerenciador.conectar(conection.getText(), username.getText());
+            } else {
+                getTelaPrincipal().notifica(Constantes.CAMPOS_VAZIOS);
+            }
+        }
+    }
 }

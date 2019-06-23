@@ -1,7 +1,5 @@
 package modelo;
 
-import static org.apache.log4j.Priority.WARN;
-
 import br.ufsc.inf.leobr.cliente.Jogada;
 import br.ufsc.inf.leobr.cliente.OuvidorProxy;
 import br.ufsc.inf.leobr.cliente.Proxy;
@@ -11,10 +9,9 @@ import br.ufsc.inf.leobr.cliente.exception.NaoConectadoException;
 import br.ufsc.inf.leobr.cliente.exception.NaoPossivelConectarException;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
-
-import controlador.CGeral;
-import controlador.CTelas;
 import utils.Constantes;
+
+import static org.apache.log4j.Priority.WARN;
 
 public class AtorNetGames implements OuvidorProxy {
     private static AtorNetGames ourInstance = new AtorNetGames();
@@ -30,62 +27,60 @@ public class AtorNetGames implements OuvidorProxy {
     }
 
     @Override
-    public void iniciarNovaPartida(Integer integer)  {
+    public void iniciarNovaPartida(Integer integer) {
+        this.proxy.iniciarNovaPartida(0);
+    }
+
+    public String iniciarPartida() {
         try {
             this.proxy.iniciarPartida(2);
+            return Constantes.PARIDA_INICIADA;
         } catch (NaoConectadoException e) {
-            logger.info("Jogador não conectado");
-            CTelas.getInstance().notifica(e.getMessage());
+            this.logger.info(e.getMessage(), e);
+            return e.getMessage();
         }
     }
 
+
     @Override
     public void finalizarPartidaComErro(String s) {
-
+        this.proxy.finalizarPartidaComErro(s);
     }
 
     @Override
     public void receberMensagem(String s) {
-
+        this.proxy.receberMensagem(s);
     }
 
     @Override
     public void receberJogada(Jogada jogada) {
-
     }
 
     @Override
     public void tratarConexaoPerdida() {
-
+        this.proxy.tratarPerdaConexao();
     }
 
     @Override
     public void tratarPartidaNaoIniciada(String s) {
-
+        this.proxy.tratarPartidaNaoInciada(s);
     }
 
     public String conectar(String ipServidor, String nomeJogador) {
-        String suxesso;
+        String sucesso;
         try {
             this.proxy.conectar(ipServidor, nomeJogador);
-            suxesso = "Conectou";
-            CGeral.setIsConectado(true);
-        } catch (JahConectadoException e) {
-            suxesso = "Ja esta conectado";
-            this.logger.log(Priority.INFO, suxesso + e.getMessage());
-        } catch (NaoPossivelConectarException e) {
-            suxesso = "Nao foi possivel conectar";
-            this.logger.log(Priority.INFO, suxesso + e.getMessage());
-        } catch (ArquivoMultiplayerException e) {
-            suxesso = "Alguma exception que nao entendi";
-            this.logger.log(Priority.INFO, suxesso + e.getMessage());
+            sucesso = Constantes.MENSAGEM_CONECTADO;
+        } catch (JahConectadoException | NaoPossivelConectarException | ArquivoMultiplayerException e) {
+            sucesso = e.getMessage();
+            this.logger.log(Priority.INFO, sucesso + e.getMessage());
         }
-        return suxesso;
+        return sucesso;
     }
 
-    public String  desconectar() {
+    public String desconectar() {
         try {
-            proxy.desconectar();
+            this.proxy.desconectar();
             return Constantes.DESCONECTADO;
         } catch (NaoConectadoException e) {
             this.logger.log(WARN, e.getMessage());

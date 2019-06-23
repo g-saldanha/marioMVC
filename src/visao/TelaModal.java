@@ -5,4 +5,9 @@ public class TelaModal implements ITela {
     public void renderizar() {
 
     }
+
+    @Override
+    public void notifica(String message) {
+
+    }
 }
