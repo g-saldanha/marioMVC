@@ -7,6 +7,7 @@ import br.ufsc.inf.leobr.cliente.exception.ArquivoMultiplayerException;
 import br.ufsc.inf.leobr.cliente.exception.JahConectadoException;
 import br.ufsc.inf.leobr.cliente.exception.NaoConectadoException;
 import br.ufsc.inf.leobr.cliente.exception.NaoPossivelConectarException;
+import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
 import utils.Constantes;
@@ -16,10 +17,12 @@ import static org.apache.log4j.Priority.WARN;
 public class AtorNetGames implements OuvidorProxy {
     private static AtorNetGames ourInstance = new AtorNetGames();
     public final Proxy proxy = Proxy.getInstance();
-    private Logger logger = Logger.getRootLogger();
+    Logger logger = Logger.getLogger(AtorNetGames.class);
+
 
     public AtorNetGames() {
         this.proxy.addOuvinte(this);
+        BasicConfigurator.configure();
     }
 
     public static AtorNetGames getInstance() {

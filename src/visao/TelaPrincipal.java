@@ -1,6 +1,5 @@
 package visao;
 
-import controlador.CTelas;
 import modelo.BarraEnergia;
 import utils.Constantes;
 
@@ -9,56 +8,59 @@ import java.awt.*;
 
 public class TelaPrincipal implements ITela {
     public static GraphicsConfiguration gc;
-    private  JFrame frame = new JFrame(gc);
+    private JFrame frame = new JFrame(gc);
     private JPanel panel = new JPanel();
     private JLabel contentPane;
     private Menu menu = new Menu();
+    private BotaoAtacar botaoAtacar = new BotaoAtacar();
+    private BotaoMovimentar botaoMovimentar = new BotaoMovimentar();
+    private BarraEnergia barraDeEnergia = new BarraEnergia();
 
     @Override
     public void renderizar() {
-        frame.setTitle(Constantes.BOAS_VINDAS);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setResizable(true);
-        frame.setJMenuBar(getMenu());
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.frame.setTitle(Constantes.BOAS_VINDAS);
+        this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.frame.setResizable(true);
+        this.frame.setJMenuBar(this.getMenu());
+        this.frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-		java.net.URL imgURL = getClass().getResource("/visao/mario-kart-64.jpg");
-        contentPane = new JLabel(new ImageIcon(imgURL));
-        frame.setContentPane(contentPane);
-        frame.setVisible(true);
+        java.net.URL imgURL = this.getClass().getResource("/visao/mario-kart-64.jpg");
+        this.contentPane = new JLabel(new ImageIcon(imgURL));
+        this.frame.setContentPane(this.contentPane);
+        this.frame.setVisible(true);
     }
 
     @Override
     public void notifica(String message) {
-            JOptionPane.showMessageDialog(null, message);
+        JOptionPane.showMessageDialog(null, message);
     }
 
-    public void renderizarTelaJogo(){
-        frame.repaint();
-        frame.remove(contentPane);
-        frame.setLayout(new GridLayout(2, 3, 5, 5));
-        panel.add(getBotaoMovimentar());
-        panel.add(getBotaoAtacar());
-        panel.add(getBarraDeEnergia());
-        frame.add(panel);
-        frame.repaint();
-        frame.validate();
+    public void renderizarTelaJogo() {
+        this.frame.repaint();
+        this.frame.remove(this.contentPane);
+        this.frame.setLayout(new GridLayout(2, 3, 5, 5));
+        this.panel.add(this.getBotaoMovimentar());
+        this.panel.add(this.getBotaoAtacar());
+        this.panel.add(this.getBarraDeEnergia());
+        this.frame.add(this.panel);
+        this.frame.repaint();
+        this.frame.validate();
     }
 
-    private JButton getBotaoAtacar() {
-        return CTelas.getInstance().enviarBotaoAtaque();
+    private BotaoAtacar getBotaoAtacar() {
+        return this.botaoAtacar;
     }
 
-    private JButton getBotaoMovimentar() {
-        return CTelas.getInstance().enviarBotaoMovimentar();
+    private BotaoMovimentar getBotaoMovimentar() {
+        return this.botaoMovimentar;
     }
 
-    private BarraEnergia getBarraDeEnergia(){
-        return CTelas.getInstance().enviarBarraDeEnergia();
+    private BarraEnergia getBarraDeEnergia() {
+        return this.barraDeEnergia;
     }
 
     public Menu getMenu() {
-        return menu;
+        return this.menu;
     }
 
 }
