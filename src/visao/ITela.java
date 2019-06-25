@@ -1,9 +1,7 @@
 package visao;
 
-import javax.swing.*;
-
 public interface ITela {
-    public void renderizar();
+    void renderizar();
 
-    public void notifica(String message);
+    void notifica(String message);
 }
