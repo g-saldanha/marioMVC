@@ -1,10 +1,14 @@
 package modelo;
 
+import javax.swing.*;
+
 public class AtorJogador {
+    private String nome;
+    private boolean minhaVez;
     private Posicao posicao;
     private int energia;
-    private boolean ehSuaVez;
     private boolean passouCheckpoint;
+    private ImageIcon fotoJogador;
 
     public Posicao getPosicao() {
         return this.posicao;
@@ -22,19 +26,35 @@ public class AtorJogador {
         this.energia = energia;
     }
 
-    public boolean isEhSuaVez() {
-        return this.ehSuaVez;
-    }
-
-    public void setEhSuaVez(boolean ehSuaVez) {
-        this.ehSuaVez = ehSuaVez;
-    }
-
     public boolean isPassouCheckpoint() {
         return this.passouCheckpoint;
     }
 
     public void setPassouCheckpoint(boolean passouCheckpoint) {
         this.passouCheckpoint = passouCheckpoint;
+    }
+
+    public String getNome() {
+        return this.nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public boolean isMinhaVez() {
+        return this.minhaVez;
+    }
+
+    public void setMinhaVez(boolean minhaVez) {
+        this.minhaVez = minhaVez;
+    }
+
+    public ImageIcon getFotoJogador() {
+        return this.fotoJogador;
+    }
+
+    public void setFotoJogador(ImageIcon fotoJogador) {
+        this.fotoJogador = fotoJogador;
     }
 }

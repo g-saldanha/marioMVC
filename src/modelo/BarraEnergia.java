@@ -16,4 +16,8 @@ public class BarraEnergia extends JProgressBar {
     public BarraEnergia getBarraDeEnergia() {
         return this;
     }
+
+    public void mudarEnergia(int valorEnergia) {
+        super.setValue(valorEnergia);
+    }
 }

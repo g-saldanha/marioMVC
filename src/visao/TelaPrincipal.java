@@ -1,6 +1,7 @@
 package visao;
 
-import modelo.BarraEnergia;
+import modelo.Pista;
+import modelo.Posicao;
 import utils.Constantes;
 
 import javax.swing.*;
@@ -8,26 +9,25 @@ import java.awt.*;
 
 public class TelaPrincipal implements ITela {
     public static GraphicsConfiguration gc;
-    private JFrame frame = new JFrame(gc);
-    private JPanel panel = new JPanel();
-    private JLabel contentPane;
+    private JFrame quadroPrincipal = new JFrame(gc);
+    private JPanel painelAcoes = new JPanel();
+    private JPanel painelPista = new JPanel();
     private Menu menu = new Menu();
     private BotaoAtacar botaoAtacar = new BotaoAtacar();
     private BotaoMovimentar botaoMovimentar = new BotaoMovimentar();
-    private BarraEnergia barraDeEnergia = new BarraEnergia();
+    private PainelInformacoes painelInformacoes = new PainelInformacoes();
 
     @Override
     public void renderizar() {
-        this.frame.setTitle(Constantes.BOAS_VINDAS);
-        this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.frame.setResizable(true);
-        this.frame.setJMenuBar(this.getMenu());
-        this.frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.quadroPrincipal.setTitle(Constantes.BOAS_VINDAS);
+        this.quadroPrincipal.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.quadroPrincipal.setResizable(true);
+        this.quadroPrincipal.setJMenuBar(this.getMenu());
+        this.quadroPrincipal.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        java.net.URL imgURL = this.getClass().getResource("/visao/mario-kart-64.jpg");
-        this.contentPane = new JLabel(new ImageIcon(imgURL));
-        this.frame.setContentPane(this.contentPane);
-        this.frame.setVisible(true);
+        java.net.URL imgURL = this.getClass().getResource("/imagens/mario-kart-64.jpg");
+        this.quadroPrincipal.setContentPane(new JLabel(new ImageIcon(imgURL)));
+        this.quadroPrincipal.setVisible(true);
     }
 
     @Override
@@ -35,16 +35,41 @@ public class TelaPrincipal implements ITela {
         JOptionPane.showMessageDialog(null, message);
     }
 
-    public void renderizarTelaJogo() {
-        this.frame.repaint();
-        this.frame.remove(this.contentPane);
-        this.frame.setLayout(new GridLayout(2, 3, 5, 5));
-        this.panel.add(this.getBotaoMovimentar());
-        this.panel.add(this.getBotaoAtacar());
-        this.panel.add(this.getBarraDeEnergia());
-        this.frame.add(this.panel);
-        this.frame.repaint();
-        this.frame.validate();
+    public void renderizarTelaJogo(Pista pista) {
+        this.quadroPrincipal = new JFrame(gc);
+        this.quadroPrincipal.setTitle(Constantes.MARIO_KART);
+        this.quadroPrincipal.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.quadroPrincipal.setResizable(true);
+        this.quadroPrincipal.setJMenuBar(this.getMenu());
+        this.quadroPrincipal.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+        JPanel painelPrincipal = new JPanel();
+        painelPrincipal.setLayout(new BoxLayout(painelPrincipal, BoxLayout.Y_AXIS));
+
+        JPanel painelFalsoTopo = new JPanel();
+        painelFalsoTopo.setPreferredSize(new Dimension(100, 100));
+
+        JPanel painelFalsoRodape = new JPanel();
+        painelFalsoRodape.setPreferredSize(new Dimension(100, 100));
+
+        painelPrincipal.add(painelFalsoTopo);
+
+        this.painelAcoes.add(new JLabel(Constantes.ACOES));
+        this.painelAcoes.add(this.getBotaoMovimentar());
+        this.painelAcoes.add(this.getBotaoAtacar());
+        painelPrincipal.add(this.painelAcoes);
+
+        this.painelInformacoes.renderizar();
+        painelPrincipal.add(this.painelInformacoes);
+
+        this.desenhaPista(pista);
+        painelPrincipal.add(this.painelPista);
+
+        painelPrincipal.add(painelFalsoRodape);
+
+        this.quadroPrincipal.add(painelPrincipal);
+        this.quadroPrincipal.setVisible(true);
+        this.notifica(Constantes.PARTIDA_INICIADA);
     }
 
     private BotaoAtacar getBotaoAtacar() {
@@ -55,12 +80,24 @@ public class TelaPrincipal implements ITela {
         return this.botaoMovimentar;
     }
 
-    private BarraEnergia getBarraDeEnergia() {
-        return this.barraDeEnergia;
-    }
 
     public Menu getMenu() {
         return this.menu;
     }
 
+    public void desenhaPista(Pista pista) {
+        this.painelPista.setLayout(new GridLayout(2, 20));
+        for (Posicao posicao : pista.getListaDePosicoes()) {
+            this.painelPista.add(new JLabel(posicao.getImagem(), JLabel.CENTER));
+        }
+        this.quadroPrincipal.repaint();
+    }
+
+    public JFrame getQuadroPrincipal() {
+        return this.quadroPrincipal;
+    }
+
+    public void setQuadroPrincipal(JFrame quadroPrincipal) {
+        this.quadroPrincipal = quadroPrincipal;
+    }
 }
