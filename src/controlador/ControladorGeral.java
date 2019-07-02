@@ -19,18 +19,41 @@ public class ControladorGeral {
     }
 
     public void adicionaOuvintes() {
-        JMenuItem sair = getTelaPrincipal().getMenu().getMenu(0).getItem(4);
+        JMenuItem sair = this.getTelaPrincipal().getMenu().getMenu(0).getItem(4);
         sair.addActionListener(acao -> System.exit(0));
-        JMenuItem conectar = getTelaPrincipal().getMenu().getMenu(0).getItem(0);
-        conectar.addActionListener(acao -> getGerenciador().conectarOption());
-        JMenuItem iniciar = getTelaPrincipal().getMenu().getMenu(0).getItem(1);
-        iniciar.addActionListener(acao -> getGerenciador().solicitarInicioDePartida());
-        JMenuItem desconectar = getTelaPrincipal().getMenu().getMenu(0).getItem(3);
-        desconectar.addActionListener(acao -> getGerenciador().desconectar());
+        JMenuItem conectar = this.getTelaPrincipal().getMenu().getMenu(0).getItem(0);
+        conectar.addActionListener(acao -> this.getGerenciador().conectarOption());
+        JMenuItem iniciar = this.getTelaPrincipal().getMenu().getMenu(0).getItem(1);
+        iniciar.addActionListener(acao -> this.getGerenciador().solicitarInicioDePartida());
+        JMenuItem desconectar = this.getTelaPrincipal().getMenu().getMenu(0).getItem(3);
+        desconectar.addActionListener(acao -> this.getGerenciador().desconectar());
     }
 
+    public void atualizarBotoes() {
+        boolean minhaVez = this.gerenciador.getJogadorPrincipal().isMinhaVez();
+        this.telaPrincipal.getBotaoAtacar().setEnabled(minhaVez && this.gerenciador.getJogadorPrincipal().isPassouCheckpoint());
+        this.telaPrincipal.getBotaoMovimentar().setEnabled(minhaVez);
+    }
+
+    public void adicionarOuvintesAcoes() {
+        this.telaPrincipal.getBotaoMovimentar().addActionListener(
+                acao -> {
+                    this.gerenciador.movimentar();
+                    this.gerenciador.atualizar();
+                }
+        );
+
+        this.telaPrincipal.getBotaoAtacar().addActionListener(
+                acao -> {
+                    this.gerenciador.ataque();
+                    this.gerenciador.atualizar();
+                }
+        );
+    }
+
+
     public TelaPrincipal getTelaPrincipal() {
-        return telaPrincipal;
+        return this.telaPrincipal;
     }
 
     public void setTelaPrincipal(TelaPrincipal telaPrincipal) {
@@ -38,7 +61,7 @@ public class ControladorGeral {
     }
 
     public Gerenciador getGerenciador() {
-        return gerenciador;
+        return this.gerenciador;
     }
 
     public void setGerenciador(Gerenciador gerenciador) {

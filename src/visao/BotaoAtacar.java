@@ -5,7 +5,8 @@ import utils.Constantes;
 import javax.swing.*;
 
 public class BotaoAtacar extends JButton {
-    private Boolean habilitado = true;
+    private static final long serialVersionUID = 838584243405814183L;
+    private Boolean habilitado = false;
 
     public BotaoAtacar() {
         this.setText(Constantes.ATACAR);

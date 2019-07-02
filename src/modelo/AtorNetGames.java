@@ -3,30 +3,26 @@ package modelo;
 import br.ufsc.inf.leobr.cliente.Jogada;
 import br.ufsc.inf.leobr.cliente.OuvidorProxy;
 import br.ufsc.inf.leobr.cliente.Proxy;
-import br.ufsc.inf.leobr.cliente.exception.ArquivoMultiplayerException;
-import br.ufsc.inf.leobr.cliente.exception.JahConectadoException;
-import br.ufsc.inf.leobr.cliente.exception.NaoConectadoException;
-import br.ufsc.inf.leobr.cliente.exception.NaoPossivelConectarException;
+import br.ufsc.inf.leobr.cliente.exception.*;
+import controlador.ControladorGeral;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
 import utils.Constantes;
 
 import javax.swing.*;
 
-import static org.apache.log4j.Priority.WARN;
-
 public class AtorNetGames implements OuvidorProxy {
 
-    private transient AtorJogador atorJogador;
+    private static final long serialVersionUID = -6720697503377705787L;
     private transient Proxy proxy;
     private transient Logger logger = Logger.getLogger(AtorNetGames.class);
+    private Gerenciador gerenciador;
 
-    public AtorNetGames(AtorJogador atorJogador) {
+    public AtorNetGames(Gerenciador gerenciador) {
         super();
+        this.gerenciador = gerenciador;
         this.proxy = Proxy.getInstance();
         this.proxy.addOuvinte(this);
-        this.atorJogador = atorJogador;
         BasicConfigurator.configure();
     }
 
@@ -34,36 +30,36 @@ public class AtorNetGames implements OuvidorProxy {
         String sucesso;
         try {
             this.proxy.conectar(ipServidor, nomeJogador);
+            this.gerenciador.getJogadorPrincipal().setNome(nomeJogador);
+            this.gerenciador.setJogadorAdversario(new AtorJogador());
             sucesso = Constantes.MENSAGEM_CONECTADO;
-            this.atorJogador.setNome(nomeJogador);
-            if (this.proxy.obterNomeAdversarios().isEmpty()) {
-                this.atorJogador.setMinhaVez(true);
-            }
         } catch (JahConectadoException | NaoPossivelConectarException | ArquivoMultiplayerException e) {
             sucesso = e.getMessage();
-            this.logger.log(Priority.INFO, sucesso + e.getMessage());
+            this.logger.error(sucesso);
         }
         return sucesso;
     }
 
-    public String iniciarPartida() {
+    public void iniciarPartida() {
         try {
             this.proxy.iniciarPartida(2);
-            if (this.proxy.obterNomeAdversarios() != null && !this.proxy.obterNomeAdversarios().isEmpty()) {
-                return Constantes.PARTIDA_INICIADA;
-            } else {
-                return "0";
-            }
+//            if (this.proxy.obterNomeAdversarios() != null && !this.proxy.obterNomeAdversarios().isEmpty()) {
+//                this.gerenciador.getJogadorAdversario().setNome(this.obterNomeAdversario());
+//            }
         } catch (NaoConectadoException e) {
             this.logger.info(e.getMessage(), e);
-            return e.getMessage();
+            Gerenciador.getTelaPrincipal().notifica(e.getMessage());
         }
     }
 
     @Override
     public void iniciarNovaPartida(Integer posicao) {
-        this.atorJogador.setMinhaVez(posicao == 1);
-        this.proxy.iniciarNovaPartida(0);
+        boolean jogadorComeca = posicao == 1;
+        this.gerenciador.getJogadorPrincipal().iniciarJogador(jogadorComeca);
+        this.gerenciador.getJogadorAdversario().setNome(this.obterNomeAdversario());
+        this.gerenciador.getJogadorAdversario().iniciarJogador(!jogadorComeca);
+        ControladorGeral.getInstance().adicionarOuvintesAcoes();
+        this.gerenciador.comecouPartida();
     }
 
 
@@ -77,8 +73,19 @@ public class AtorNetGames implements OuvidorProxy {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public void enviarJogada(Jogada jogada) {
+        try {
+            this.proxy.enviaJogada(jogada);
+        } catch (NaoJogandoException e) {
+            this.logger.error(e.getMessage());
+        }
+    }
+
     @Override
     public void receberJogada(Jogada jogada) {
+        this.gerenciador.jogadorPrincipal.setMinhaVez(true);
+        this.gerenciador.jogadorAdversario.setMinhaVez(false);
+        this.gerenciador.executarJogada((Jogo) jogada);
     }
 
     @Override
@@ -95,20 +102,20 @@ public class AtorNetGames implements OuvidorProxy {
     public String desconectar() {
         try {
             this.proxy.desconectar();
-            this.atorJogador.setNome(null);
-            this.atorJogador.setPassouCheckpoint(false);
-            this.atorJogador.setEnergia(0);
-            this.atorJogador.setPosicao(null);
-            this.atorJogador.setMinhaVez(false);
+            this.gerenciador.getJogadorPrincipal().setNome(null);
+            this.gerenciador.getJogadorPrincipal().setPassouCheckpoint(false);
+            this.gerenciador.getJogadorPrincipal().setEnergia(0);
+            this.gerenciador.getJogadorPrincipal().setPosicao(null);
+            this.gerenciador.getJogadorPrincipal().setMinhaVez(false);
             return Constantes.DESCONECTADO;
         } catch (NaoConectadoException e) {
-            this.logger.log(WARN, e.getMessage());
+            this.logger.error(e.getMessage());
             return e.getMessage();
         }
     }
 
     public String obterNomeAdversario() {
-        if (this.atorJogador.isMinhaVez()) {
+        if (this.gerenciador.getJogadorPrincipal().isMinhaVez()) {
             return this.proxy.obterNomeAdversario(2);
         } else {
             return this.proxy.obterNomeAdversario(1);

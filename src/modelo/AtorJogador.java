@@ -1,13 +1,15 @@
 package modelo;
 
 import javax.swing.*;
+import java.io.Serializable;
 
-public class AtorJogador {
+public class AtorJogador implements Serializable {
+    private static final long serialVersionUID = 6506063253267916065L;
     private String nome;
     private boolean minhaVez;
     private Posicao posicao;
     private int energia;
-    private boolean passouCheckpoint;
+    private boolean passouCheckpoint = false;
     private ImageIcon fotoJogador;
 
     public Posicao getPosicao() {
@@ -56,5 +58,15 @@ public class AtorJogador {
 
     public void setFotoJogador(ImageIcon fotoJogador) {
         this.fotoJogador = fotoJogador;
+    }
+
+    public void iniciarJogador(boolean posicao) {
+        if (posicao) {
+            this.setMinhaVez(true);
+            this.setFotoJogador(new ImageIcon(this.getClass().getResource("/imagens/mario.jpg")));
+        } else {
+            this.setMinhaVez(false);
+            this.setFotoJogador(new ImageIcon(this.getClass().getResource("/imagens/luigi.jpg")));
+        }
     }
 }

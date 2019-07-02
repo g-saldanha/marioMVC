@@ -1,8 +1,11 @@
 package modelo;
 
 import javax.swing.*;
+import java.io.Serializable;
 
-public class Posicao {
+public class Posicao implements Serializable {
+
+    private static final long serialVersionUID = -9165082816222957042L;
     private int coluna;
     private int linha;
     private AtorJogador jogador;
@@ -12,13 +15,6 @@ public class Posicao {
     public Posicao(int linha, int coluna) {
         this.setColuna(coluna);
         this.setLinha(linha);
-        if (coluna == 10) {
-            this.setImagem(new ImageIcon(this.getClass().getResource("/imagens/checkpoint.jpg")));
-        } else if (coluna == 20) {
-            this.setImagem(new ImageIcon(this.getClass().getResource("/imagens/chegada.jpg")));
-        } else {
-            this.setImagem(new ImageIcon(this.getClass().getResource("/imagens/faixa.jpg")));
-        }
     }
 
     public boolean isOcupada() {
@@ -58,6 +54,15 @@ public class Posicao {
     }
 
     public ImageIcon getImagem() {
+        if (this.coluna == 10) {
+            this.setImagem(new ImageIcon(this.getClass().getResource("/imagens/checkpoint.jpg")));
+        } else if (this.coluna == 20) {
+            this.setImagem(new ImageIcon(this.getClass().getResource("/imagens/chegada.jpg")));
+        } else if (this.getJogador() != null) {
+            this.setImagem(this.getJogador().getFotoJogador());
+        } else {
+            this.setImagem(new ImageIcon(this.getClass().getResource("/imagens/faixa.jpg")));
+        }
         return this.imagem;
     }
 

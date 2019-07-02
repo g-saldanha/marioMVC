@@ -1,13 +1,10 @@
 package modelo;
 
-import br.ufsc.inf.leobr.cliente.Jogada;
-
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Pista implements Jogada {
+public class Pista {
     private List<Posicao> listaDePosicoes;
     private List<AtorJogador> listaDejogadores;
 
@@ -31,24 +28,23 @@ public class Pista implements Jogada {
         }
     }
 
-    public void moveJogador(AtorJogador atorJogador, Posicao posicao1, Posicao posicao2) {
-        Posicao posicaoJogadorAtual = this.pegaPosicao(posicao1.getLinha(), posicao1.getColuna());
+    public void moveJogador(AtorJogador atorJogador, int novaPosicao) {
+        Posicao posicaoJogadorAtual = this.pegaPosicao(atorJogador.getPosicao().getLinha(), atorJogador.getPosicao().getColuna());
         posicaoJogadorAtual.setJogador(null);
 
-        Posicao posicaoJogadorMoveu = this.pegaPosicao(posicao2.getLinha(), posicao2.getColuna());
+        Posicao posicaoJogadorMoveu = this.pegaPosicao(atorJogador.getPosicao().getLinha(), novaPosicao);
+        atorJogador.getPosicao().setColuna(novaPosicao);
         posicaoJogadorMoveu.setJogador(atorJogador);
     }
 
     public void colocaJogadoresInicioPartida(AtorJogador jogador1, AtorJogador jogador2) {
         Posicao posicaoJogador1 = this.pegaPosicao(1, 1);
-        jogador1.setFotoJogador(new ImageIcon(this.getClass().getResource("/imagens/mario.jpg")));
-        posicaoJogador1.setImagem(jogador1.getFotoJogador());
         posicaoJogador1.setJogador(jogador1);
+        jogador1.setPosicao(posicaoJogador1);
 
         Posicao posicaoJogador2 = this.pegaPosicao(2, 1);
-        jogador2.setFotoJogador(new ImageIcon(this.getClass().getResource("/imagens/luigi.jpg")));
-        posicaoJogador2.setImagem(jogador2.getFotoJogador());
         posicaoJogador2.setJogador(jogador2);
+        jogador2.setPosicao(posicaoJogador2);
     }
 
     public Posicao pegaPosicao(int linha, int coluna) {
@@ -77,13 +73,11 @@ public class Pista implements Jogada {
         this.listaDejogadores = listaDejogadores;
     }
 
-    public AtorJogador jogadorDaVez() {
-        for (AtorJogador jogadorDaVez :
-                this.listaDejogadores) {
-            if (jogadorDaVez.isMinhaVez()) {
-                return jogadorDaVez;
-            }
+    public AtorJogador pegaJogadorDaVez() {
+        if (this.getListaDejogadores().get(0).isMinhaVez()) {
+            return this.getListaDejogadores().get(0);
+        } else {
+            return this.getListaDejogadores().get(1);
         }
-        return null;
     }
 }

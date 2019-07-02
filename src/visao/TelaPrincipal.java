@@ -35,7 +35,7 @@ public class TelaPrincipal implements ITela {
         JOptionPane.showMessageDialog(null, message);
     }
 
-    public void renderizarTelaJogo(Pista pista) {
+    public void criaTelaJogo(Pista pista) {
         this.quadroPrincipal = new JFrame(gc);
         this.quadroPrincipal.setTitle(Constantes.MARIO_KART);
         this.quadroPrincipal.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -59,8 +59,9 @@ public class TelaPrincipal implements ITela {
         this.painelAcoes.add(this.getBotaoAtacar());
         painelPrincipal.add(this.painelAcoes);
 
-        this.painelInformacoes.renderizar();
+        this.painelInformacoes.renderizar(pista);
         painelPrincipal.add(this.painelInformacoes);
+
 
         this.desenhaPista(pista);
         painelPrincipal.add(this.painelPista);
@@ -72,25 +73,20 @@ public class TelaPrincipal implements ITela {
         this.notifica(Constantes.PARTIDA_INICIADA);
     }
 
-    private BotaoAtacar getBotaoAtacar() {
+    public BotaoAtacar getBotaoAtacar() {
         return this.botaoAtacar;
     }
 
-    private BotaoMovimentar getBotaoMovimentar() {
-        return this.botaoMovimentar;
+    public void setBotaoAtacar(BotaoAtacar botaoAtacar) {
+        this.botaoAtacar = botaoAtacar;
     }
-
 
     public Menu getMenu() {
         return this.menu;
     }
 
-    public void desenhaPista(Pista pista) {
-        this.painelPista.setLayout(new GridLayout(2, 20));
-        for (Posicao posicao : pista.getListaDePosicoes()) {
-            this.painelPista.add(new JLabel(posicao.getImagem(), JLabel.CENTER));
-        }
-        this.quadroPrincipal.repaint();
+    public BotaoMovimentar getBotaoMovimentar() {
+        return this.botaoMovimentar;
     }
 
     public JFrame getQuadroPrincipal() {
@@ -100,4 +96,26 @@ public class TelaPrincipal implements ITela {
     public void setQuadroPrincipal(JFrame quadroPrincipal) {
         this.quadroPrincipal = quadroPrincipal;
     }
+
+    public void setBotaoMovimentar(BotaoMovimentar botaoMovimentar) {
+        this.botaoMovimentar = botaoMovimentar;
+    }
+
+    public void desenhaPista(Pista pista) {
+        this.painelPista.removeAll();
+        this.painelPista.setLayout(new GridLayout(2, 20));
+        for (Posicao posicao : pista.getListaDePosicoes()) {
+            this.painelPista.add(new JLabel(posicao.getImagem(), JLabel.CENTER));
+        }
+        this.painelPista.repaint();
+        this.painelPista.setVisible(true);
+        this.quadroPrincipal.repaint();
+    }
+
+    public void atualizar(Pista pista) {
+        this.painelInformacoes.atualiza(pista);
+        this.desenhaPista(pista);
+    }
+
+
 }
