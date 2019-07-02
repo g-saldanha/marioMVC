@@ -71,4 +71,8 @@ public class ControladorGeral {
     public void desconectarAction() {
         this.getGerenciador().desconectar();
     }
+
+    public void enviaPersonagem(int opcao) {
+        this.gerenciador.adicionarPersonagem(opcao);
+    }
 }

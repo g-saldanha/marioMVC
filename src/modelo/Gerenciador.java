@@ -2,6 +2,7 @@ package modelo;
 
 import controlador.ControladorGeral;
 import utils.Constantes;
+import visao.TelaEscolherJogadores;
 import visao.TelaPrincipal;
 
 import javax.swing.*;
@@ -15,6 +16,7 @@ public class Gerenciador {
     public AtorJogador jogadorPrincipal;
     public AtorJogador jogadorAdversario;
     private Premiacao premiacao;
+    public TelaEscolherJogadores telaEscolherPersonagem;
 
     public Gerenciador() {
         ControladorGeral.getInstance().setGerenciador(this);
@@ -42,41 +44,18 @@ public class Gerenciador {
         getTelaPrincipal().notifica(conectar);
     }
 
-    public static void setTelaPrincipal(TelaPrincipal telaPrincipal) {
-        Gerenciador.telaPrincipal = telaPrincipal;
-    }
-
-    private void criarPista() {
-        if (this.jogadorPrincipal.isMinhaVez()) {
-            this.pista = new Pista(this.jogadorPrincipal, this.jogadorAdversario);
-        } else {
-            this.pista = new Pista(this.jogadorAdversario, this.jogadorPrincipal);
-        }
-    }
-
-    public void solicitarInicioDePartida() {
-        atorNetGames.iniciarPartida();
-    }
-
-    public void passouCheckpoint(AtorJogador atorJogador) {
-        if (atorJogador.getPosicao().getColuna() >= 10) {
-            atorJogador.setPassouCheckpoint(true);
-        }
-    }
-
     public void desconectar() {
         String desconectar = atorNetGames.desconectar();
         getTelaPrincipal().notifica(desconectar);
         getTelaPrincipal().renderizar();
     }
 
-    public void escolherPersonagem() {
-
+    public void solicitarInicioDePartida() {
+        atorNetGames.iniciarPartida();
     }
 
-    private void comecarJogo() {
-        getTelaPrincipal().getQuadroPrincipal().setVisible(false);
-        getTelaPrincipal().criaTelaJogo(this.pista);
+    public void escolherPersonagem() {
+        this.telaEscolherPersonagem.renderizar();
     }
 
     public void movimentar() {
@@ -85,16 +64,6 @@ public class Gerenciador {
         this.getJogadorAdversario().setMinhaVez(true);
         this.executarMovimento(this.jogadorPrincipal, resultadoRolagemDado);
         atorNetGames.enviarJogada(new Jogo(Constantes.MOVIMENTAR, resultadoRolagemDado));
-    }
-
-    public void executarMovimento(AtorJogador jogador, int valor) {
-        this.pista.moveJogador(jogador, valor);
-        this.passouCheckpoint(jogador);
-        this.verificaVitoria();
-    }
-
-    private void verificaVitoria() {
-        this.premiacao.verificaGanhador(this.jogadorPrincipal);
     }
 
     public int rolarDado() {
@@ -114,6 +83,45 @@ public class Gerenciador {
         this.jogadorPrincipal.setMinhaVez(false);
         this.executarAtaque(this.jogadorAdversario, resultadoRolagemDadoAtaque, resultadoRolagemDadoDefesa);
         atorNetGames.enviarJogada(new Jogo(Constantes.ATACAR, resultadoRolagemDadoAtaque, resultadoRolagemDadoDefesa));
+    }
+
+    public void defesa(AtorJogador jogadoAtacado, int resultadoAtaque, int resultadoRolagemDadoDefesa) {
+        int calculoDano = resultadoAtaque - resultadoRolagemDadoDefesa;
+        jogadoAtacado.setEnergia(jogadoAtacado.getEnergia() - (calculoDano < 0 ? 0 : calculoDano));
+        this.verificaVitoria();
+    }
+
+    public static void setTelaPrincipal(TelaPrincipal telaPrincipal) {
+        Gerenciador.telaPrincipal = telaPrincipal;
+    }
+
+    private void criarPista() {
+        if (this.jogadorPrincipal.isMinhaVez()) {
+            this.pista = new Pista(this.jogadorPrincipal, this.jogadorAdversario);
+        } else {
+            this.pista = new Pista(this.jogadorAdversario, this.jogadorPrincipal);
+        }
+    }
+
+    public void passouCheckpoint(AtorJogador atorJogador) {
+        if (atorJogador.getPosicao().getColuna() >= 10) {
+            atorJogador.setPassouCheckpoint(true);
+        }
+    }
+
+    private void comecarJogo() {
+        getTelaPrincipal().getQuadroPrincipal().setVisible(false);
+        getTelaPrincipal().criaTelaJogo(this.pista);
+    }
+
+    public void executarMovimento(AtorJogador jogador, int valor) {
+        this.pista.moveJogador(jogador, valor);
+        this.passouCheckpoint(jogador);
+        this.verificaVitoria();
+    }
+
+    private void verificaVitoria() {
+        this.premiacao.verificaGanhador(this.jogadorPrincipal);
     }
 
     private void executarAtaque(AtorJogador jogadoAtacado, int resultadoRolagemDadoAtaque, int resultadoRolagemDadoDefesa) {
@@ -136,12 +144,6 @@ public class Gerenciador {
                 getTelaPrincipal().notifica(Constantes.CAMPOS_VAZIOS);
             }
         }
-    }
-
-    public void defesa(AtorJogador jogadoAtacado, int resultadoAtaque, int resultadoRolagemDadoDefesa) {
-        int calculoDano = resultadoAtaque - resultadoRolagemDadoDefesa;
-        jogadoAtacado.setEnergia(jogadoAtacado.getEnergia() - (calculoDano < 0 ? 0 : calculoDano));
-        this.verificaVitoria();
     }
 
     public void comecouPartida() {
@@ -179,5 +181,8 @@ public class Gerenciador {
         getTelaPrincipal().atualizar(this.pista);
     }
 
+    public void adicionarPersonagem(int opcao) {
+        this.getJogadorPrincipal().adicionarFotoJogador(opcao);
+    }
 }
 

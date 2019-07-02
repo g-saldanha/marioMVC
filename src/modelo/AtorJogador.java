@@ -70,4 +70,7 @@ public class AtorJogador implements Serializable {
             this.setFotoJogador(new ImageIcon(this.getClass().getResource("/imagens/luigi.jpg")));
         }
     }
+
+    public void adicionarFotoJogador(int opcao) {
+    }
 }

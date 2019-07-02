@@ -37,7 +37,6 @@ public class TelaPremiacao implements ITela {
         if (premiacao == 0) {
             ControladorGeral.getInstance().desconectarAction();
         }
-
     }
 
     public boolean isVitorioso() {
