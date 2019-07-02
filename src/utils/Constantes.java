@@ -9,7 +9,10 @@ public class Constantes {
     public static final String ACOES = "ACOES : ";
     public static final String MARIO_KART = "Mario Kart";
     public static final String VITORIA = "Parabens voce venceu";
-    public static final String DERROTA = "Parabens voce perdeu";
+    public static final String DERROTA = "Voce perdeu";
+    public static final String NAO = "Nao";
+    public static final String SIM = "Sim";
+    public static final String PODE_ATACAR = "Pode Atacar: ";
 
     public static final String CAMPOS_VAZIOS = "Algum ou todos os campos estao vazios, por favor preencha para prosseguir";
     public static final String MENSAGEM_CONECTADO = "Voce esta conectado";

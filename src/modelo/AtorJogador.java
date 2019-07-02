@@ -61,6 +61,7 @@ public class AtorJogador implements Serializable {
     }
 
     public void iniciarJogador(boolean posicao) {
+        this.setEnergia(100);
         if (posicao) {
             this.setMinhaVez(true);
             this.setFotoJogador(new ImageIcon(this.getClass().getResource("/imagens/mario.jpg")));

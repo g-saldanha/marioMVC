@@ -83,8 +83,8 @@ public class AtorNetGames implements OuvidorProxy {
 
     @Override
     public void receberJogada(Jogada jogada) {
-        this.gerenciador.jogadorPrincipal.setMinhaVez(true);
-        this.gerenciador.jogadorAdversario.setMinhaVez(false);
+        this.gerenciador.getJogadorPrincipal().setMinhaVez(true);
+        this.gerenciador.getJogadorAdversario().setMinhaVez(false);
         this.gerenciador.executarJogada((Jogo) jogada);
     }
 

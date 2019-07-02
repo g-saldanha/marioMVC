@@ -67,4 +67,8 @@ public class ControladorGeral {
     public void setGerenciador(Gerenciador gerenciador) {
         this.gerenciador = gerenciador;
     }
+
+    public void desconectarAction() {
+        this.getGerenciador().desconectar();
+    }
 }

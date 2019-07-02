@@ -1,5 +1,6 @@
 package visao;
 
+import controlador.ControladorGeral;
 import utils.Constantes;
 
 import javax.swing.*;
@@ -11,6 +12,7 @@ public class TelaPremiacao implements ITela {
     private ImageIcon derrota = new ImageIcon(this.getClass().getResource("/imagens/derrota.jpg"));
     private JFrame telaPrincipal = new JFrame(this.gc);
     private boolean vitorioso;
+    private JPanel painelPremio;
 
     public TelaPremiacao() {
     }
@@ -21,16 +23,20 @@ public class TelaPremiacao implements ITela {
 
     @Override
     public void renderizar() {
-        JPanel painelPremio = new JPanel();
-        painelPremio.setLayout(new BoxLayout(painelPremio, BoxLayout.Y_AXIS));
-        painelPremio.add(new JLabel(this.isVitorioso() ? this.vitoria : this.derrota));
-        painelPremio.add(new JLabel(this.isVitorioso() ? Constantes.VITORIA : Constantes.DERROTA, JLabel.CENTER));
-        this.telaPrincipal.add(painelPremio);
-        JOptionPane.showMessageDialog(painelPremio, painelPremio);
+        this.painelPremio = new JPanel();
+        this.painelPremio.setLayout(new BoxLayout(this.painelPremio, BoxLayout.Y_AXIS));
+        this.painelPremio.add(new JLabel(this.isVitorioso() ? this.vitoria : this.derrota));
+        this.painelPremio.add(new JLabel(this.isVitorioso() ? Constantes.VITORIA : Constantes.DERROTA, JLabel.CENTER));
+        this.telaPrincipal.add(this.painelPremio);
+        this.notifica(null);
     }
 
     @Override
     public void notifica(String message) {
+        int premiacao = JOptionPane.showConfirmDialog(null, this.painelPremio, "Premiacao", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (premiacao == 0) {
+            ControladorGeral.getInstance().desconectarAction();
+        }
 
     }
 

@@ -32,7 +32,7 @@ public class Pista {
         Posicao posicaoJogadorAtual = this.pegaPosicao(atorJogador.getPosicao().getLinha(), atorJogador.getPosicao().getColuna());
         posicaoJogadorAtual.setJogador(null);
 
-        Posicao posicaoJogadorMoveu = this.pegaPosicao(atorJogador.getPosicao().getLinha(), novaPosicao);
+        Posicao posicaoJogadorMoveu = this.pegaPosicao(atorJogador.getPosicao().getLinha(), atorJogador.getPosicao().getColuna() + novaPosicao);
         atorJogador.getPosicao().setColuna(novaPosicao);
         posicaoJogadorMoveu.setJogador(atorJogador);
     }

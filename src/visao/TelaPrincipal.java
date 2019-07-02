@@ -16,6 +16,8 @@ public class TelaPrincipal implements ITela {
     private BotaoAtacar botaoAtacar = new BotaoAtacar();
     private BotaoMovimentar botaoMovimentar = new BotaoMovimentar();
     private PainelInformacoes painelInformacoes = new PainelInformacoes();
+    private JPanel painelFalsoRodape;
+    private JPanel painelPrincipal;
 
     @Override
     public void renderizar() {
@@ -43,32 +45,32 @@ public class TelaPrincipal implements ITela {
         this.quadroPrincipal.setJMenuBar(this.getMenu());
         this.quadroPrincipal.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-        JPanel painelPrincipal = new JPanel();
-        painelPrincipal.setLayout(new BoxLayout(painelPrincipal, BoxLayout.Y_AXIS));
+        this.painelPrincipal = new JPanel();
+        this.painelPrincipal.setLayout(new BoxLayout(this.painelPrincipal, BoxLayout.Y_AXIS));
 
         JPanel painelFalsoTopo = new JPanel();
         painelFalsoTopo.setPreferredSize(new Dimension(100, 100));
 
-        JPanel painelFalsoRodape = new JPanel();
-        painelFalsoRodape.setPreferredSize(new Dimension(100, 100));
+        this.painelFalsoRodape = new JPanel();
+        this.painelFalsoRodape.setPreferredSize(new Dimension(100, 100));
 
-        painelPrincipal.add(painelFalsoTopo);
+        this.painelPrincipal.add(painelFalsoTopo);
 
         this.painelAcoes.add(new JLabel(Constantes.ACOES));
         this.painelAcoes.add(this.getBotaoMovimentar());
         this.painelAcoes.add(this.getBotaoAtacar());
-        painelPrincipal.add(this.painelAcoes);
+        this.painelPrincipal.add(this.painelAcoes);
 
         this.painelInformacoes.renderizar(pista);
-        painelPrincipal.add(this.painelInformacoes);
+        this.painelPrincipal.add(this.painelInformacoes);
 
 
         this.desenhaPista(pista);
-        painelPrincipal.add(this.painelPista);
+        this.painelPrincipal.add(this.painelPista);
 
-        painelPrincipal.add(painelFalsoRodape);
+        this.painelPrincipal.add(this.painelFalsoRodape);
 
-        this.quadroPrincipal.add(painelPrincipal);
+        this.quadroPrincipal.add(this.painelPrincipal);
         this.quadroPrincipal.setVisible(true);
         this.notifica(Constantes.PARTIDA_INICIADA);
     }
@@ -109,12 +111,15 @@ public class TelaPrincipal implements ITela {
         }
         this.painelPista.repaint();
         this.painelPista.setVisible(true);
+        this.painelPrincipal.add(this.painelPista);
+        this.painelPrincipal.add(this.painelFalsoRodape);
         this.quadroPrincipal.repaint();
     }
 
     public void atualizar(Pista pista) {
         this.painelInformacoes.atualiza(pista);
         this.desenhaPista(pista);
+        this.quadroPrincipal.repaint();
     }
 
 

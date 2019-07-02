@@ -82,6 +82,7 @@ public class Gerenciador {
     public void movimentar() {
         int resultadoRolagemDado = this.rolarDado();
         this.getJogadorPrincipal().setMinhaVez(false);
+        this.getJogadorAdversario().setMinhaVez(true);
         this.executarMovimento(this.jogadorPrincipal, resultadoRolagemDado);
         atorNetGames.enviarJogada(new Jogo(Constantes.MOVIMENTAR, resultadoRolagemDado));
     }
@@ -93,10 +94,7 @@ public class Gerenciador {
     }
 
     private void verificaVitoria() {
-        if (this.jogadorPrincipal.getPosicao().getColuna() == 20) {
-            this.premiacao.verificaGanhador(this.jogadorPrincipal);
-            //enviar notificacao de vitoria e derrota
-        }
+        this.premiacao.verificaGanhador(this.jogadorPrincipal);
     }
 
     public int rolarDado() {
@@ -174,12 +172,11 @@ public class Gerenciador {
         } else if (jogada.getTipoJogada().equals(Constantes.ATACAR)) {
             this.executarAtaque(this.jogadorPrincipal, jogada.getValorDadoMovimentoAtaque(), jogada.getValorDadoDefesa());
         }
-        this.atualizar();
     }
 
     public void atualizar() {
         ControladorGeral.getInstance().atualizarBotoes();
-//        getTelaPrincipal().atualizar(this.pista);
+        getTelaPrincipal().atualizar(this.pista);
     }
 
 }
