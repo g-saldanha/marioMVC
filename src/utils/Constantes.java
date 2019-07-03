@@ -1,11 +1,17 @@
 package utils;
 
 public class Constantes {
+
     private Constantes() {
         throw new IllegalStateException("Utility class");
     }
 
 
+    public static final String VALOR_DADO = "Valor do dado";
+    public static final String ROLAR_DADO = "Rolar dado?";
+    public static final String MODAL_ROLAR_DADO = "Modal de Rolar Dado";
+    public static final String DANO = "O valor rolado foi de dano foi";
+    public static final String NOTIFICACAO = "Notificacao";
     public static final String ACOES = "ACOES : ";
     public static final String MARIO_KART = "Mario Kart";
     public static final String VITORIA = "Parabens voce venceu";

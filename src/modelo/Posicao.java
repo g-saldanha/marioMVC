@@ -54,7 +54,7 @@ public class Posicao implements Serializable {
     }
 
     public ImageIcon getImagem() {
-        if (this.coluna == 10) {
+        if (this.coluna == 10 && this.getJogador() == null) {
             this.setImagem(new ImageIcon(this.getClass().getResource("/imagens/checkpoint.jpg")));
         } else if (this.coluna == 20) {
             this.setImagem(new ImageIcon(this.getClass().getResource("/imagens/chegada.jpg")));

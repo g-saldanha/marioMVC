@@ -38,7 +38,6 @@ public class PainelInformacoes extends JPanel {
         this.informacoesJogadorVez = this.getJogadorDaVezTitulo(jogador.getNome());
         this.barraDeEnergia.setValue(jogador.getEnergia());
         this.informacoesPodeAtacar.setText(Constantes.PODE_ATACAR + this.getPodeAtacar(jogador.isPassouCheckpoint()));
-        this.repaint();
     }
 
     public JLabel getInfoTitulo() {

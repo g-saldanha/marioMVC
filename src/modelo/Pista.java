@@ -33,7 +33,8 @@ public class Pista {
         posicaoJogadorAtual.setJogador(null);
 
         Posicao posicaoJogadorMoveu = this.pegaPosicao(atorJogador.getPosicao().getLinha(), atorJogador.getPosicao().getColuna() + novaPosicao);
-        atorJogador.getPosicao().setColuna(novaPosicao);
+        atorJogador.setPosicao(null);
+        atorJogador.setPosicao(posicaoJogadorMoveu);
         posicaoJogadorMoveu.setJogador(atorJogador);
     }
 
@@ -52,6 +53,8 @@ public class Pista {
                 this.listaDePosicoes) {
             if (posicao.getLinha() == linha && posicao.getColuna() == coluna) {
                 return posicao;
+            } else if (coluna > 20) {
+                this.pegaPosicao(linha, 20);
             }
         }
         return null;

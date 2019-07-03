@@ -34,7 +34,8 @@ public class TelaPrincipal implements ITela {
 
     @Override
     public void notifica(String message) {
-        JOptionPane.showMessageDialog(null, message);
+        ImageIcon icon = new ImageIcon(this.getClass().getResource("/imagens/conectado.gif"));
+        JOptionPane.showMessageDialog(null, message, Constantes.NOTIFICACAO, JOptionPane.INFORMATION_MESSAGE, icon);
     }
 
     public void criaTelaJogo(Pista pista) {
@@ -109,17 +110,20 @@ public class TelaPrincipal implements ITela {
         for (Posicao posicao : pista.getListaDePosicoes()) {
             this.painelPista.add(new JLabel(posicao.getImagem(), JLabel.CENTER));
         }
-        this.painelPista.repaint();
-        this.painelPista.setVisible(true);
-        this.painelPrincipal.add(this.painelPista);
-        this.painelPrincipal.add(this.painelFalsoRodape);
+        this.painelPista.revalidate();
         this.quadroPrincipal.repaint();
     }
 
     public void atualizar(Pista pista) {
-        this.painelInformacoes.atualiza(pista);
+        this.desenhaPainelDeInfo(pista);
         this.desenhaPista(pista);
         this.quadroPrincipal.repaint();
+    }
+
+    private void desenhaPainelDeInfo(Pista pista) {
+        this.painelInformacoes.removeAll();
+        this.painelInformacoes.renderizar(pista);
+        this.painelInformacoes.revalidate();
     }
 
 
