@@ -72,7 +72,6 @@ public class Gerenciador {
         int dadoRolado = 0;
         if (modalDeRolarDado == 0) {
             dadoRolado = ThreadLocalRandom.current().nextInt(1, 6 + 1);
-            JOptionPane.showMessageDialog(null, Constantes.DANO + dadoRolado, Constantes.VALOR_DADO, JOptionPane.INFORMATION_MESSAGE, dado);
         }
         return dadoRolado;
     }
@@ -88,7 +87,7 @@ public class Gerenciador {
 
     public void defesa(AtorJogador jogadoAtacado, int resultadoAtaque, int resultadoRolagemDadoDefesa) {
         int calculoDano = resultadoAtaque - resultadoRolagemDadoDefesa;
-        jogadoAtacado.setEnergia(jogadoAtacado.getEnergia() - (calculoDano < 0 ? 0 : calculoDano));
+        jogadoAtacado.setEnergia(jogadoAtacado.getEnergia() - (calculoDano <= 0 ? 0 : calculoDano));
         this.verificaVitoria();
     }
 
@@ -117,16 +116,25 @@ public class Gerenciador {
 
     public void executarMovimento(AtorJogador jogador, int valor) {
         this.pista.moveJogador(jogador, valor);
+        ImageIcon dado = new ImageIcon(this.getClass().getResource("/imagens/dado.png"));
         this.passouCheckpoint(jogador);
+        JOptionPane.showMessageDialog(null, String.format(Constantes.MOVIMENTO, jogador.getNome(), valor), Constantes.VALOR_DADO, JOptionPane.INFORMATION_MESSAGE, dado);
         this.verificaVitoria();
     }
 
     private void verificaVitoria() {
-        this.premiacao.verificaGanhador(this.jogadorPrincipal);
+        String verificacao = this.premiacao.verificaGanhador(this.jogadorPrincipal);
+        if (verificacao.equals(Constantes.VITORIA)) {
+            atorNetGames.enviarJogada(new Jogo(Constantes.VITORIA, 0));
+        }
     }
 
     private void executarAtaque(AtorJogador jogadoAtacado, int resultadoRolagemDadoAtaque, int resultadoRolagemDadoDefesa) {
+        ImageIcon dado = new ImageIcon(this.getClass().getResource("/imagens/dado.png"));
         this.defesa(jogadoAtacado, resultadoRolagemDadoAtaque, resultadoRolagemDadoDefesa);
+        int dano = resultadoRolagemDadoDefesa - resultadoRolagemDadoAtaque;
+        JOptionPane.showMessageDialog(null, String.format(Constantes.DANO, jogadoAtacado.getNome(), dano >= 0 ? 0 : dano), Constantes.VALOR_DADO, JOptionPane.INFORMATION_MESSAGE, dado);
+
     }
 
     public void conectarOption() {
@@ -175,8 +183,15 @@ public class Gerenciador {
             this.executarMovimento(this.jogadorAdversario, jogada.getValorDadoMovimentoAtaque());
         } else if (jogada.getTipoJogada().equals(Constantes.ATACAR)) {
             this.executarAtaque(this.jogadorPrincipal, jogada.getValorDadoMovimentoAtaque(), jogada.getValorDadoDefesa());
+        } else if (jogada.getTipoJogada().equals(Constantes.VITORIA)) {
+            this.executarPremiacao();
         }
         this.atualizar();
+    }
+
+    private void executarPremiacao() {
+        this.premiacao.notificaPerdedor(this.jogadorPrincipal);
+        ControladorGeral.getInstance().desconectarAction();
     }
 
     public void atualizar() {

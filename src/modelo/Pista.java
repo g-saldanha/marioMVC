@@ -49,15 +49,11 @@ public class Pista {
     }
 
     public Posicao pegaPosicao(int linha, int coluna) {
-        for (Posicao posicao :
-                this.listaDePosicoes) {
-            if (posicao.getLinha() == linha && posicao.getColuna() == coluna) {
-                return posicao;
-            } else if (coluna > 20) {
-                this.pegaPosicao(linha, 20);
-            }
+        if (coluna <= 20) {
+            return this.listaDePosicoes.get(linha == 2 ? 19 + coluna : coluna - 1);
+        } else {
+            return this.listaDePosicoes.get(linha == 2 ? 19 : 39);
         }
-        return null;
     }
 
     public List<Posicao> getListaDePosicoes() {

@@ -1,6 +1,5 @@
 package visao;
 
-import controlador.ControladorGeral;
 import utils.Constantes;
 
 import javax.swing.*;
@@ -33,10 +32,10 @@ public class TelaPremiacao implements ITela {
 
     @Override
     public void notifica(String message) {
-        int premiacao = JOptionPane.showConfirmDialog(null, this.painelPremio, "Premiacao", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE);
-        if (premiacao == 0) {
-            ControladorGeral.getInstance().desconectarAction();
-        }
+        JOptionPane.showConfirmDialog(null, this.painelPremio, "Premiacao", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE);
+//        if (premiacao == 0) {
+//            ControladorGeral.getInstance().desconectarAction();
+//        }
     }
 
     public boolean isVitorioso() {

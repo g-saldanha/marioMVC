@@ -7,10 +7,11 @@ public class Constantes {
     }
 
 
+    public static final String DANO = "%s recebeu dano de %s na energia";
     public static final String VALOR_DADO = "Valor do dado";
     public static final String ROLAR_DADO = "Rolar dado?";
     public static final String MODAL_ROLAR_DADO = "Modal de Rolar Dado";
-    public static final String DANO = "O valor rolado foi de dano foi";
+    public static final String MOVIMENTO = "%s se movimentou %s casas";
     public static final String NOTIFICACAO = "Notificacao";
     public static final String ACOES = "ACOES : ";
     public static final String MARIO_KART = "Mario Kart";
@@ -30,7 +31,7 @@ public class Constantes {
     public static final String SAIR = "Sair";
     public static final String INFORMACOES = "INFORMACOES";
     public static final String TURNO = "Turno";
-    public static final String JOGADOR_DA_VEZ = "AtorJogador da Vez";
+    public static final String JOGADOR_DA_VEZ = "Jogador da Vez";
 
     public static final String PISTA = "Pista";
     public static final String BOAS_VINDAS = "Bem vindo ao Mario kart";

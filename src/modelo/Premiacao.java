@@ -5,15 +5,24 @@ import visao.TelaPremiacao;
 
 public class Premiacao {
 
-    private String msgPremiacao;
+    private String msgPremiacao = "nada";
     private AtorJogador atorPremiado;
 
-    public void verificaGanhador(AtorJogador atorJogador) {
+    public String verificaGanhador(AtorJogador atorJogador) {
         if (atorJogador.getPosicao().getColuna() == 20) {
             this.atorPremiado = atorJogador;
             this.msgPremiacao = Constantes.VITORIA;
             this.geraNotificaoPremio();
         } else if (atorJogador.getEnergia() == 0) {
+            this.atorPremiado = atorJogador;
+            this.msgPremiacao = Constantes.DERROTA;
+            this.geraNotificaoPremio();
+        }
+        return this.msgPremiacao;
+    }
+
+    public void notificaPerdedor(AtorJogador atorJogador) {
+        if (atorJogador.getPosicao().getColuna() < 20) {
             this.atorPremiado = atorJogador;
             this.msgPremiacao = Constantes.DERROTA;
             this.geraNotificaoPremio();
