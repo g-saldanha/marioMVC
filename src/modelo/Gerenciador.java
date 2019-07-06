@@ -6,6 +6,8 @@ import visao.TelaEscolherJogadores;
 import visao.TelaPrincipal;
 
 import javax.swing.*;
+import java.awt.*;
+import java.net.URL;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Gerenciador {
@@ -13,14 +15,17 @@ public class Gerenciador {
     public static TelaPrincipal telaPrincipal = new TelaPrincipal();
     public static AtorNetGames atorNetGames;
     public Pista pista;
-    public AtorJogador jogadorPrincipal;
-    public AtorJogador jogadorAdversario;
+    public final URL favico = this.getClass().getResource("/imagens/conectar.png");
+    public Jogador jogadorPrincipal;
+    public Jogador jogadorAdversario;
     private Premiacao premiacao = new Premiacao();
     public TelaEscolherJogadores telaEscolherPersonagem;
+    public ImageIcon dado = new ImageIcon(this.getClass().getResource("/imagens/dado.png"));
 
     public Gerenciador() {
         ControladorGeral.getInstance().setGerenciador(this);
-        this.jogadorPrincipal = new AtorJogador();
+        this.jogadorPrincipal = new Jogador();
+        telaPrincipal.getQuadroPrincipal().setIconImage(Toolkit.getDefaultToolkit().getImage(this.favico));
         atorNetGames = new AtorNetGames(this);
     }
 
@@ -67,8 +72,7 @@ public class Gerenciador {
     }
 
     public int rolarDado() {
-        ImageIcon dado = new ImageIcon(this.getClass().getResource("/imagens/dado.png"));
-        int modalDeRolarDado = JOptionPane.showConfirmDialog(null, Constantes.ROLAR_DADO, Constantes.MODAL_ROLAR_DADO, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, dado);
+        int modalDeRolarDado = JOptionPane.showConfirmDialog(null, Constantes.ROLAR_DADO, Constantes.MODAL_ROLAR_DADO, JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, this.dado);
         int dadoRolado = 0;
         if (modalDeRolarDado == 0) {
             dadoRolado = ThreadLocalRandom.current().nextInt(1, 6 + 1);
@@ -85,7 +89,7 @@ public class Gerenciador {
         atorNetGames.enviarJogada(new Jogo(Constantes.ATACAR, resultadoRolagemDadoAtaque, resultadoRolagemDadoDefesa));
     }
 
-    public void defesa(AtorJogador jogadoAtacado, int resultadoAtaque, int resultadoRolagemDadoDefesa) {
+    public void defesa(Jogador jogadoAtacado, int resultadoAtaque, int resultadoRolagemDadoDefesa) {
         int calculoDano = resultadoAtaque - resultadoRolagemDadoDefesa;
         jogadoAtacado.setEnergia(jogadoAtacado.getEnergia() - (calculoDano <= 0 ? 0 : calculoDano));
         this.verificaVitoria();
@@ -103,9 +107,9 @@ public class Gerenciador {
         }
     }
 
-    public void passouCheckpoint(AtorJogador atorJogador) {
-        if (atorJogador.getPosicao().getColuna() >= 10) {
-            atorJogador.setPassouCheckpoint(true);
+    public void passouCheckpoint(Jogador jogador) {
+        if (jogador.getPosicao().getColuna() >= 10) {
+            jogador.setPassouCheckpoint(true);
         }
     }
 
@@ -114,11 +118,10 @@ public class Gerenciador {
         getTelaPrincipal().criaTelaJogo(this.pista);
     }
 
-    public void executarMovimento(AtorJogador jogador, int valor) {
+    public void executarMovimento(Jogador jogador, int valor) {
         this.pista.moveJogador(jogador, valor);
-        ImageIcon dado = new ImageIcon(this.getClass().getResource("/imagens/dado.png"));
         this.passouCheckpoint(jogador);
-        JOptionPane.showMessageDialog(null, String.format(Constantes.MOVIMENTO, jogador.getNome(), valor), Constantes.VALOR_DADO, JOptionPane.INFORMATION_MESSAGE, dado);
+        JOptionPane.showMessageDialog(null, String.format(Constantes.MOVIMENTO, jogador.getNome(), valor), Constantes.VALOR_DADO, JOptionPane.INFORMATION_MESSAGE, this.dado);
         this.verificaVitoria();
     }
 
@@ -129,12 +132,10 @@ public class Gerenciador {
         }
     }
 
-    private void executarAtaque(AtorJogador jogadoAtacado, int resultadoRolagemDadoAtaque, int resultadoRolagemDadoDefesa) {
-        ImageIcon dado = new ImageIcon(this.getClass().getResource("/imagens/dado.png"));
-        this.defesa(jogadoAtacado, resultadoRolagemDadoAtaque, resultadoRolagemDadoDefesa);
+    private void executarAtaque(Jogador jogadorAtacado, int resultadoRolagemDadoAtaque, int resultadoRolagemDadoDefesa) {
+        this.defesa(jogadorAtacado, resultadoRolagemDadoAtaque, resultadoRolagemDadoDefesa);
         int dano = resultadoRolagemDadoDefesa - resultadoRolagemDadoAtaque;
-        JOptionPane.showMessageDialog(null, String.format(Constantes.DANO, jogadoAtacado.getNome(), dano >= 0 ? 0 : dano), Constantes.VALOR_DADO, JOptionPane.INFORMATION_MESSAGE, dado);
-
+        JOptionPane.showMessageDialog(null, String.format(Constantes.DANO, jogadorAtacado.getNome(), dano >= 0 ? 0 : dano), Constantes.VALOR_DADO, JOptionPane.INFORMATION_MESSAGE, this.dado);
     }
 
     public void conectarOption() {
@@ -146,7 +147,7 @@ public class Gerenciador {
         };
 
         ImageIcon icon = new ImageIcon(this.getClass().getResource("/imagens/conectar.png"));
-        int option = JOptionPane.showConfirmDialog(null, message, "Conectar", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, icon);
+        int option = JOptionPane.showConfirmDialog(null, message, Constantes.CONECTAR, JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, icon);
         if (option == JOptionPane.OK_OPTION) {
             if (!username.getText().isEmpty() && !conection.getText().isEmpty()) {
                 Gerenciador.conectar(conection.getText(), username.getText());
@@ -166,15 +167,15 @@ public class Gerenciador {
         this.pista = pista;
     }
 
-    public AtorJogador getJogadorPrincipal() {
+    public Jogador getJogadorPrincipal() {
         return this.jogadorPrincipal;
     }
 
-    public AtorJogador getJogadorAdversario() {
+    public Jogador getJogadorAdversario() {
         return this.jogadorAdversario;
     }
 
-    public void setJogadorAdversario(AtorJogador jogadorAdversario) {
+    public void setJogadorAdversario(Jogador jogadorAdversario) {
         this.jogadorAdversario = jogadorAdversario;
     }
 

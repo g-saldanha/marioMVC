@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="marioMVC:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/marioMVC_jar</output-path>
+    <root id="archive" name="marioMVC.jar">
+      <element id="module-output" name="marioMVC" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/netgames/ngnrtFramework.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/netgames/NetGamesFileOffline.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/log4j-1.2.17.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

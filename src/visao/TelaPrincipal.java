@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class TelaPrincipal implements ITela {
-    public static GraphicsConfiguration gc;
+    private static GraphicsConfiguration gc;
     private JFrame quadroPrincipal = new JFrame(gc);
     private JPanel painelAcoes = new JPanel();
     private JPanel painelPista = new JPanel();
@@ -120,7 +120,7 @@ public class TelaPrincipal implements ITela {
         this.quadroPrincipal.repaint();
     }
 
-    private void desenhaPainelDeInfo(Pista pista) {
+    public void desenhaPainelDeInfo(Pista pista) {
         this.painelInformacoes.removeAll();
         this.painelInformacoes.renderizar(pista);
         this.painelInformacoes.revalidate();

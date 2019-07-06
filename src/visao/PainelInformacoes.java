@@ -1,7 +1,7 @@
 package visao;
 
-import modelo.AtorJogador;
 import modelo.BarraEnergia;
+import modelo.Jogador;
 import modelo.Pista;
 import utils.Constantes;
 
@@ -19,7 +19,7 @@ public class PainelInformacoes extends JPanel {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
 
-        AtorJogador jogador = pista.pegaJogadorDaVez();
+        Jogador jogador = pista.pegaJogadorDaVez();
 
         this.add(this.getInfoTitulo(), gbc);
         this.add(new JLabel(" "), gbc);
@@ -34,7 +34,7 @@ public class PainelInformacoes extends JPanel {
     }
 
     public void atualiza(Pista pista) {
-        AtorJogador jogador = pista.pegaJogadorDaVez();
+        Jogador jogador = pista.pegaJogadorDaVez();
         this.informacoesJogadorVez = this.getJogadorDaVezTitulo(jogador.getNome());
         this.barraDeEnergia.setValue(jogador.getEnergia());
         this.informacoesPodeAtacar.setText(Constantes.PODE_ATACAR + this.getPodeAtacar(jogador.isPassouCheckpoint()));
@@ -55,11 +55,6 @@ public class PainelInformacoes extends JPanel {
     public JLabel getPistaTitulo() {
         return new JLabel(Constantes.PISTA);
     }
-
-    private BarraEnergia getBarraDeEnergia() {
-        return this.barraDeEnergia;
-    }
-
 
     private String getPodeAtacar(boolean passouCheckpoint) {
         return passouCheckpoint ? Constantes.SIM : Constantes.NAO;

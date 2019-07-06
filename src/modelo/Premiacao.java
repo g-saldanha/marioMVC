@@ -6,24 +6,20 @@ import visao.TelaPremiacao;
 public class Premiacao {
 
     private String msgPremiacao = "nada";
-    private AtorJogador atorPremiado;
 
-    public String verificaGanhador(AtorJogador atorJogador) {
-        if (atorJogador.getPosicao().getColuna() == 20) {
-            this.atorPremiado = atorJogador;
+    public String verificaGanhador(Jogador jogador) {
+        if (jogador.getPosicao().getColuna() == 20) {
             this.msgPremiacao = Constantes.VITORIA;
             this.geraNotificaoPremio();
-        } else if (atorJogador.getEnergia() == 0) {
-            this.atorPremiado = atorJogador;
+        } else if (jogador.getEnergia() == 0) {
             this.msgPremiacao = Constantes.DERROTA;
             this.geraNotificaoPremio();
         }
         return this.msgPremiacao;
     }
 
-    public void notificaPerdedor(AtorJogador atorJogador) {
-        if (atorJogador.getPosicao().getColuna() < 20) {
-            this.atorPremiado = atorJogador;
+    public void notificaPerdedor(Jogador jogador) {
+        if (jogador.getPosicao().getColuna() < 20) {
             this.msgPremiacao = Constantes.DERROTA;
             this.geraNotificaoPremio();
         }

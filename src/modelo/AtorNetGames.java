@@ -16,7 +16,7 @@ public class AtorNetGames implements OuvidorProxy {
     private static final long serialVersionUID = -6720697503377705787L;
     private transient Proxy proxy;
     private transient Logger logger = Logger.getLogger(AtorNetGames.class);
-    private Gerenciador gerenciador;
+    private transient Gerenciador gerenciador;
 
     public AtorNetGames(Gerenciador gerenciador) {
         super();
@@ -31,7 +31,7 @@ public class AtorNetGames implements OuvidorProxy {
         try {
             this.proxy.conectar(ipServidor, nomeJogador);
             this.gerenciador.getJogadorPrincipal().setNome(nomeJogador);
-            this.gerenciador.setJogadorAdversario(new AtorJogador());
+            this.gerenciador.setJogadorAdversario(new Jogador());
             sucesso = Constantes.MENSAGEM_CONECTADO;
         } catch (JahConectadoException | NaoPossivelConectarException | ArquivoMultiplayerException e) {
             sucesso = e.getMessage();
@@ -43,9 +43,6 @@ public class AtorNetGames implements OuvidorProxy {
     public void iniciarPartida() {
         try {
             this.proxy.iniciarPartida(2);
-//            if (this.proxy.obterNomeAdversarios() != null && !this.proxy.obterNomeAdversarios().isEmpty()) {
-//                this.gerenciador.getJogadorAdversario().setNome(this.obterNomeAdversario());
-//            }
         } catch (NaoConectadoException e) {
             this.logger.info(e.getMessage(), e);
             Gerenciador.getTelaPrincipal().notifica(e.getMessage());

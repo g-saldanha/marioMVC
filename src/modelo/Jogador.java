@@ -3,7 +3,7 @@ package modelo;
 import javax.swing.*;
 import java.io.Serializable;
 
-public class AtorJogador implements Serializable {
+public class Jogador implements Serializable {
     private static final long serialVersionUID = 6506063253267916065L;
     private String nome;
     private boolean minhaVez;
@@ -71,6 +71,4 @@ public class AtorJogador implements Serializable {
         }
     }
 
-    public void adicionarFotoJogador(int opcao) {
-    }
 }

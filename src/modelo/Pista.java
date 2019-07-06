@@ -6,9 +6,9 @@ import java.util.List;
 
 public class Pista {
     private List<Posicao> listaDePosicoes;
-    private List<AtorJogador> listaDejogadores;
+    private List<Jogador> listaDejogadores;
 
-    public Pista(AtorJogador jogador1, AtorJogador jogador2) {
+    public Pista(Jogador jogador1, Jogador jogador2) {
         this.listaDePosicoes = new ArrayList<>();
         this.listaDejogadores = Arrays.asList(jogador1, jogador2);
         this.adicionarFaixa1();
@@ -28,17 +28,17 @@ public class Pista {
         }
     }
 
-    public void moveJogador(AtorJogador atorJogador, int novaPosicao) {
-        Posicao posicaoJogadorAtual = this.pegaPosicao(atorJogador.getPosicao().getLinha(), atorJogador.getPosicao().getColuna());
+    public void moveJogador(Jogador jogador, int novaPosicao) {
+        Posicao posicaoJogadorAtual = this.pegaPosicao(jogador.getPosicao().getLinha(), jogador.getPosicao().getColuna());
         posicaoJogadorAtual.setJogador(null);
 
-        Posicao posicaoJogadorMoveu = this.pegaPosicao(atorJogador.getPosicao().getLinha(), atorJogador.getPosicao().getColuna() + novaPosicao);
-        atorJogador.setPosicao(null);
-        atorJogador.setPosicao(posicaoJogadorMoveu);
-        posicaoJogadorMoveu.setJogador(atorJogador);
+        Posicao posicaoJogadorMoveu = this.pegaPosicao(jogador.getPosicao().getLinha(), jogador.getPosicao().getColuna() + novaPosicao);
+        jogador.setPosicao(null);
+        jogador.setPosicao(posicaoJogadorMoveu);
+        posicaoJogadorMoveu.setJogador(jogador);
     }
 
-    public void colocaJogadoresInicioPartida(AtorJogador jogador1, AtorJogador jogador2) {
+    public void colocaJogadoresInicioPartida(Jogador jogador1, Jogador jogador2) {
         Posicao posicaoJogador1 = this.pegaPosicao(1, 1);
         posicaoJogador1.setJogador(jogador1);
         jogador1.setPosicao(posicaoJogador1);
@@ -64,15 +64,15 @@ public class Pista {
         this.listaDePosicoes = listaDePosicoes;
     }
 
-    public List<AtorJogador> getListaDejogadores() {
+    public List<Jogador> getListaDejogadores() {
         return this.listaDejogadores;
     }
 
-    public void setListaDejogadores(List<AtorJogador> listaDejogadores) {
+    public void setListaDejogadores(List<Jogador> listaDejogadores) {
         this.listaDejogadores = listaDejogadores;
     }
 
-    public AtorJogador pegaJogadorDaVez() {
+    public Jogador pegaJogadorDaVez() {
         if (this.getListaDejogadores().get(0).isMinhaVez()) {
             return this.getListaDejogadores().get(0);
         } else {

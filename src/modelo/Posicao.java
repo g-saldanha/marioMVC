@@ -8,7 +8,7 @@ public class Posicao implements Serializable {
     private static final long serialVersionUID = -9165082816222957042L;
     private int coluna;
     private int linha;
-    private AtorJogador jogador;
+    private Jogador jogador;
     private boolean checkPoint;
     private ImageIcon imagem;
 
@@ -37,11 +37,11 @@ public class Posicao implements Serializable {
         this.linha = linha;
     }
 
-    public AtorJogador getJogador() {
+    public Jogador getJogador() {
         return this.jogador;
     }
 
-    public void setJogador(AtorJogador jogador) {
+    public void setJogador(Jogador jogador) {
         this.jogador = jogador;
     }
 
