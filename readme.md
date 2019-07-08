@@ -1,6 +1,6 @@
 ## NOTAS E ENTREGAS MARIO KART
 
-### Texto com instruções de instalação / manutenção para futuros usuários do software 
+### Manutenção para futuros usuários do software 
 para ter o código em sua máquina, é necessário clonar o repositório executando o comando
 
 ```git clone https://github.com/g-saldanha/marioMVC.git```
@@ -12,7 +12,7 @@ nota-se que para que seja feito o jogo em turnos com conexão é preciso os outr
 
 [Aprenda a usar o NetGames](https://www.inf.ufsc.br/~ricardo.silva/INE5417e5608/trabalho5.htm)
 
-#### Jar
+### Texto com instruções de instalação
 
 Caso for rodar diretamente pelos executáveis, é necessario rodar o servidor.jar dentro da pasta servidor e depois abrir o Jar marioMVC.jar
 
